@@ -1,3 +1,4 @@
+using EfCore.Data.Configurations;
 using EfCore.Domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,47 +14,12 @@ namespace EfCore.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Cliente>(p => {
-                p.ToTable("Clientes");
-                p.HasKey(p => p.Id);
-                p.Property(p => p.Nome).HasColumnType("VARCHAR(80)").IsRequired();
-                p.Property(p => p.Telefone).HasColumnType("CHAR(11)");
-                p.Property(p => p.Nome).HasColumnType("CHAR(8)").IsRequired();
-                p.Property(p => p.Nome).HasColumnType("CHAR(2)").IsRequired();
-                p.Property(p => p.Nome).HasMaxLength(60).IsRequired();
-
-                p.HasIndex(i => i.Telefone).HasName("idx_cliente_telefone");
-            });
-
-            modelBuilder.Entity<Produto>(p => {
-                p.ToTable("Produtos");
-                p.HasKey(p => p.Id);
-                p.Property(p => p.CodigoBarras).HasColumnType("VARCHAR(14)").IsRequired();
-                p.Property(p => p.Descricao).HasColumnType("VARCHAR(60)");
-                p.Property(p => p.Valor).IsRequired();
-                p.Property(p => p.TipoProduto).HasConversion<string>();
-            });
-
-            modelBuilder.Entity<Pedido>(p => {
-                p.ToTable("Produtos");
-                p.HasKey(p => p.Id);
-                p.Property(p => p.IniciadoEm).HasColumnType("GETDATE()").ValueGeneratedOnAdd();
-                p.Property(p => p.Status).HasConversion<string>();
-                p.Property(p => p.TipoFrete).HasConversion<string>();
-
-                p.HasMany(p => p.Itens)
-                    .WithOne(p => p.Pedido)
-                    .OnDelete(DeleteBehavior.Cascade);
-            }); 
-            
-            modelBuilder.Entity<PedidoItem>(p => {
-                p.ToTable("Produtos");
-                p.HasKey(p => p.Id);
-                p.Property(p => p.Quantidade).HasDefaultValue(1).IsRequired();
-                p.Property(p => p.Valor).IsRequired();
-                p.Property(p => p.Desconto).IsRequired();
-            });
-
+            //o codigo acomentado abaixo busca por entidades a serem mapeadas altomaticamente, desde que implementaram o IEntityTipeConfiguration
+            //modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationContext).Assembly); 
+            modelBuilder.ApplyConfiguration(new ClienteConfiguration());
+            modelBuilder.ApplyConfiguration(new PedidoConfiguration());
+            modelBuilder.ApplyConfiguration(new PedidoItemConfiguration());
+            modelBuilder.ApplyConfiguration(new ProdutoConfiguration());
         }
     }
 
