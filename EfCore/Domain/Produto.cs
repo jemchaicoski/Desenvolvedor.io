@@ -1,7 +1,9 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using EfCore.ValueObjects;
 
 namespace EfCore.Domain
 {
+    [Table("Produtos")]
     public class Produto
     {
         public int Id {get; set;}

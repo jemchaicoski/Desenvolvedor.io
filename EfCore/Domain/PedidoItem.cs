@@ -1,5 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace EfCore.Domain
 {
+    [Table("PedidoItem")]
     public class PedidoItem
     {
         public int Id {get; set;}
