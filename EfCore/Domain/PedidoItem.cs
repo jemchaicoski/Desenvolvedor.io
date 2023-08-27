@@ -7,6 +7,7 @@ namespace EfCore.Domain
         public Pedido Pedido {get; set;}
         public int ProdutoId {get; set;}
         public Produto Produto {get; set;}
+        public decimal Quantidade {get; set;}
         public decimal Valor {get; set;}
         public decimal Desconto {get; set;}
     }
